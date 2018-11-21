@@ -92,15 +92,20 @@ def generate_dict(filename):
     start_str = get_start_str(pass_lenght)
     start_str = "01012323454567678989"
     end_str = get_end_str(pass_lenght)
+    end_str =   "qrqrststuvuvwywyxzxz"
     new_str = start_str
+    counter = 0
     with open(filename, 'w') as fh:
         if filter_str(new_str):
             fh.write(new_str + "\n")
+            counter = counter + 1
         while new_str != end_str:
             new_str = inc_str(new_str)
             if filter_str(new_str):
                 fh.write(new_str + "\n")
+                counter = counter + 1
         fh.close()
+    print("Total number of passwords in " + filename + ": " + str(counter))
 
 
 
