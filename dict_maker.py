@@ -72,10 +72,8 @@ def three_chars_in_str(str_var):
 def filter_str(str_var):
     
     if same_char_togethers(str_var):
-        print("Not pass filter same_char_togethers")
         return False
     if three_chars_in_str(str_var):
-        print("Not pass filter three_chars_in_str")
         return False
     
     return True
@@ -97,7 +95,6 @@ def generate_dict(filename):
     new_str = start_str
     with open(filename, 'w') as fh:
         if filter_str(new_str):
-            print("Esto lo deberia escribir")
             fh.write(new_str + "\n")
         while new_str != end_str:
             new_str = inc_str(new_str)
