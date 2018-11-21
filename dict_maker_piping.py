@@ -14,37 +14,6 @@ def get_end_str(lenght):
     for i in range(lenght):
         end_str = end_str + "z"
     return end_str
-    
-
-# Fcn to increment value
-def inc_char(chr_var):
-    ascii_chr_var = ord(str(chr_var))
-    if ascii_chr_var == 122:
-        ascii_chr_var = 48
-    elif ascii_chr_var == 57:
-        ascii_chr_var = 65
-    elif ascii_chr_var == 90:
-        ascii_chr_var = 97
-    else:
-        ascii_chr_var = ascii_chr_var + 1
-    return chr(ascii_chr_var)
-
-# Fcn to increment string
-def inc_str(str_var):
-    count = 0
-    new_str = ""
-    next_char = False
-    for char in str_var:
-        count = count + 1
-        if count == 1 or next_char:
-            char = inc_char(char)
-            next_char = False
-            if char == '0':
-                next_char = True
-
-        new_str = new_str + char
-        
-    return new_str
 
 # Rule apply to string
 def same_char_togethers(str_var):
@@ -77,6 +46,45 @@ def filter_str(str_var):
         return False
     
     return True
+
+# Fcn to increment value
+def inc_char(chr_var):
+    ascii_chr_var = ord(str(chr_var))
+    if ascii_chr_var == 122:
+        ascii_chr_var = 48
+    elif ascii_chr_var == 57:
+        ascii_chr_var = 65
+    elif ascii_chr_var == 90:
+        ascii_chr_var = 97
+    else:
+        ascii_chr_var = ascii_chr_var + 1
+    return chr(ascii_chr_var)
+
+# Fcn to increment string
+def inc_str(str_var, first_level_flag):
+    count = 0
+    new_str = ""
+    next_char = False
+    i_aux = 0
+    for char in str_var:
+        count = count + 1
+        if count == 1 or next_char:
+            char = inc_char(char)
+            next_char = False
+            i_aux = count
+            if char == '0':
+                next_char = True
+
+        new_str = new_str + char
+    
+    # Check for string validity
+    substr_start = new_str[:i_aux]
+    substr_end = new_str[i_aux:]
+    while not filter_str(substr_end) and first_level_flag:
+        substr_end = inc_str(substr_end, False)
+    
+    new_str = substr_start + substr_end
+    return new_str
     
 def generate_dict(filename):
     '''
@@ -88,25 +96,20 @@ def generate_dict(filename):
     - (97-122)/(a-z)
     '''
     pass_lenght = 20
-    print("Generating dictionary on file: " + filename)
     start_str = get_start_str(pass_lenght)
-    start_str = "01012323454567678989"
+    start_str = "98987676545432321010"
     end_str = get_end_str(pass_lenght)
     end_str =   "qrqrststuvuvwywyxzxz"
     new_str = start_str
     counter = 0
-    with open(filename, 'w') as fh:
+    if filter_str(new_str):
+        print(new_str)
+        counter = counter + 1
+    while new_str != end_str:
+        new_str = inc_str(new_str, True)
         if filter_str(new_str):
-            fh.write(new_str + "\n")
+            print(new_str)
             counter = counter + 1
-        while new_str != end_str:
-            new_str = inc_str(new_str)
-            if filter_str(new_str):
-                fh.write(new_str + "\n")
-                counter = counter + 1
-        fh.close()
-    print("Total number of passwords in " + filename + ": " + str(counter))
-
 
 
 '''
